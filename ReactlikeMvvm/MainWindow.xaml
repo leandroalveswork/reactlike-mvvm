@@ -1,0 +1,68 @@
+﻿<Window x:Class="ReactlikeMvvm.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReactlikeMvvm"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" Margin="20">
+            <TextBlock Text="Exemplo Mostrar/Esconder Blocos separadamente" FontSize="20" />
+            <StackPanel Orientation="Horizontal">
+                <Button FontSize="14" Content="{Binding TextoMostrarEsconderWpfIntro}" Command="{Binding MostrarEsconderWpfIntroCommand}" HorizontalAlignment="Left" Margin="0,20,0,0" Padding="6" />
+                <Button FontSize="14" Content="{Binding TextoMostrarEsconderReact}" Command="{Binding MostrarEsconderReactCommand}" HorizontalAlignment="Left" Margin="20,20,0,0" Padding="6" />
+            </StackPanel>
+            <StackPanel Visibility="{Binding VisibilityBlocoWpfIntro}" Margin="0,20,0,0">
+                <TextBlock FontSize="14" TextWrapping="Wrap" TextAlignment="Justify">
+                    <TextBlock.Inlines>
+                        <Run FontWeight="Bold" Text="WPF (Windows Presentation Foundation)"/>
+                        <Run Text=" surgiu em 2006, com uma sintaxe que seguia a lógica de escrever o XAML (Design) independente de qual linguagem, C# ou VB. Ele faz o código ser altamente específico para o Design, " />
+                        <Run TextDecorations="Underline" Text="colocando o Design como abstração e o Código como implementação do Design" />
+                        <Run Text=", o que dificulta a escrita do código. Nos frameworks modernos de UI/Frontend, uma abordagem recomendada é " />
+                        <Run TextDecorations="Underline" Text="colocar tanto o Design quanto o código implementar estados da UI" />
+                        <Run Text=" sendo esses estados representados por uma " />
+                        <Run FontWeight="Bold" Text="variável ou getter" />
+                        <Run Text=" aonde a alteração dessse valor é " />
+                        <Run FontWeight="Bold" Text="em parte programada pelo dev, e outra parte gerenciada pelo framework." />
+                    </TextBlock.Inlines>
+                </TextBlock>
+                <TextBlock FontSize="14" TextWrapping="Wrap" TextAlignment="Justify">
+                    <TextBlock.Inlines>
+                        <Run Text="Junto ao WPF foi criado o padrão " />
+                        <Run FontWeight="Bold" Text="MVVM (Model-View-ViewModel)" />
+                        <Run Text=", em que o Design XAML (View) implementa getters da ViewModel, uma classe C# programada pelo dev. No entanto, o código para programar o getter e setter desse estado é " />
+                        <Run FontWeight="Bold" Text="bastante verboso, mesmo usando herança" />
+                        <Run Text=" - a classe ViewModel precisa implementar INotifyPropertyChanged, e dentro de CADA setter na ViewModel é preciso ativar o evento PropertyChanged. A programação dos estados derivados diretamente do XAML também é verbosa: o tutorial da Microsoft ensina a criar uma classe que implemente IValueConverter, registrar o IValueConverter no setup do projeto, e utilizar uma sintaxe com StaticResource no elemento Binding. " />
+                        <Run FontWeight="Bold" Text="Existe um jeito mais fácil de programar." />
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Visibility="{Binding VisibilityBlocoReact}" Margin="0,20,0,0" Background="#b69cfe">
+                <TextBlock FontSize="14" TextWrapping="Wrap" TextAlignment="Justify" Margin="6,6,6,6">
+                    <TextBlock.Inlines>
+                        <Run Text="A biblioteca " />
+                        <Run FontWeight="Bold" Text="ReactJS" />
+                        <Run Text=" foi lançada em 2013, permitindo uma sintaxe em que " />
+                        <Run FontWeight="Bold" Text="Design e Código implementam estados da UI" />
+                        <Run Text=", e é possível a programação com uma " />
+                        <Run FontWeight="Bold" Text="sintaxe leve, tanto para estados (useState) quanto estados derivados (useEffect)." />
+                        <Run Text=" A ideia deste projeto open-source é trazer a sintaxe leve do React para poder substituir a sintaxe verbosa de estados e estados derivados em projetos que utilizam MVVM. " />
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </StackPanel>
+            <TextBlock Text="Exemplo Contador" FontSize="20" Margin="0,20,0,0" />
+            <StackPanel Margin="0,20,0,0">
+                <Button FontSize="14" Command="{Binding IncrementarCommand}" HorizontalAlignment="Left" Padding="6">
+                    Clique aqui! +1
+                </Button>
+                <TextBlock FontSize="14" Margin="0,20,0,0">
+                    <TextBlock.Inlines>
+                        <Run Text="Você clicou "/>
+                        <Run FontWeight="Bold" Text="{Binding TextoXVezes}"/>
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
