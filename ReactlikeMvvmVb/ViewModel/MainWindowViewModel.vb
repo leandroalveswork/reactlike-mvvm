@@ -36,6 +36,12 @@ Public Class MainWindowViewModel
 
     Private Property _vezesClicadas As HiEstado(Of Integer)
     Public Property IncrementarCommand As ICommand
+    Private Property _visibilityTextoXVezes As HiEstadoDerivado(Of Visibility)
+    Public ReadOnly Property VisibilityTextoXVezes As Visibility
+        Get
+            Return _visibilityTextoXVezes.ValorCalculado
+        End Get
+    End Property
     Private Property _textoXVezes As HiEstadoDerivado(Of String)
     Public Property TextoXVezes As String
         Get
@@ -51,7 +57,7 @@ Public Class MainWindowViewModel
             Return If(_eVisivelBlocoWpfIntro.Valor, Visibility.Visible, Visibility.Collapsed)
         End Function, { _eVisivelBlocoWpfIntro }, NameOf(VisibilityBlocoWpfIntro) )
         _textoMostrarEsconderWpfIntro = UseEffect(Function()
-            Return If(_eVisivelBlocoWpfIntro.Valor, "Esconder Intro WPF", "Mostrar Info WPF")
+            Return If(_eVisivelBlocoWpfIntro.Valor, "Esconder Intro WPF", "Mostrar Intro WPF")
         End Function, { _eVisivelBlocoWpfIntro }, NameOf(TextoMostrarEsconderWpfIntro))
         MostrarEsconderWpfIntroCommand = New HiCommand(Sub()
             _eVisivelBlocoWpfIntro.Alterar(Not (_eVisivelBlocoWpfIntro.Valor))
@@ -72,16 +78,20 @@ Public Class MainWindowViewModel
         IncrementarCommand = New HiCommand(Sub()
             _vezesClicadas.Alterar(_vezesClicadas.Valor + 1)
         End Sub)
+        _visibilityTextoXVezes = UseEffect(Function()
+            Return If(_vezesClicadas.Valor > 0, Visibility.Visible, Visibility.Collapsed)
+        End Function, { _vezesClicadas }, NameOf(VisibilityTextoXVezes))
         _textoXVezes = UseEffect(Function()
             If (_vezesClicadas.Valor.Equals(0)) Then
-                Return " nenhuma vez."
+                Return ""
             End If
-            Return If(_vezesClicadas.Valor.Equals(1), " 1 vez.", " " + _vezesClicadas.Valor.ToString() + " vezes.")
+            Return If(_vezesClicadas.Valor.Equals(1), "1 vez.", _vezesClicadas.Valor.ToString() & " vezes.")
         End Function, { _vezesClicadas }, NameOf(TextoXVezes))
+
         Main()
     End Sub
 
     Public Sub Main()
-
+        _eVisivelBlocoReact.Alterar(True)
     End Sub
 End Class

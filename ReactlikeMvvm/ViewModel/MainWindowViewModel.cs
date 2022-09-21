@@ -21,6 +21,8 @@ namespace ReactlikeMvvm.ViewModel
         public ICommand MostrarEsconderReactCommand { get; set; }
         private HiEstado<int> _vezesClicadas { get; set; }
         public ICommand IncrementarCommand { get; set; }
+        private HiEstadoDerivado<Visibility> _visibilityTextoXVezes;
+        public Visibility VisibilityTextoXVezes => _visibilityTextoXVezes.ValorCalculado;
         private HiEstadoDerivado<string> _textoXVezes;
         public string TextoXVezes
         {
@@ -44,6 +46,7 @@ namespace ReactlikeMvvm.ViewModel
             MostrarEsconderWpfIntroCommand = new HiCommand(() => {
                 _eVisivelBlocoWpfIntro.Alterar(!_eVisivelBlocoWpfIntro.Valor);
             });
+
             _eVisivelBlocoReact = UseState(false, nameof(_eVisivelBlocoReact));
             _visibilityBlocoReact = UseEffect(() =>
                 _eVisivelBlocoReact.Valor ? Visibility.Visible : Visibility.Collapsed
@@ -54,22 +57,27 @@ namespace ReactlikeMvvm.ViewModel
             MostrarEsconderReactCommand = new HiCommand(() => {
                 _eVisivelBlocoReact.Alterar(!_eVisivelBlocoReact.Valor);
             });
+
             _vezesClicadas = UseState(0, nameof(_vezesClicadas));
             IncrementarCommand = new HiCommand(() => {
                 _vezesClicadas.Alterar(_vezesClicadas.Valor + 1); 
             });
+            _visibilityTextoXVezes = UseEffect(() => 
+                _vezesClicadas.Valor > 0 ? Visibility.Visible : Visibility.Collapsed
+            , new [] { _vezesClicadas }, nameof(VisibilityTextoXVezes));
             _textoXVezes = UseEffect(() => {
                 if (_vezesClicadas.Valor == 0)
                 {
-                    return " nenhuma vez.";
+                    return "";
                 }
-                return _vezesClicadas.Valor == 1 ? " 1 vez." : (" " + _vezesClicadas.Valor.ToString() + " vezes.");
+                return _vezesClicadas.Valor == 1 ? "1 vez." : (_vezesClicadas.Valor.ToString() + " vezes.");
             }, new [] { _vezesClicadas }, nameof(TextoXVezes));
+            
             Main();
         }
         public void Main()
         {
-
+            _eVisivelBlocoReact.Alterar(true);
         }
     }
 }
